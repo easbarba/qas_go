@@ -1,49 +1,76 @@
 package config
 
 import (
-	// "encoding/csv"
-	"encoding/csv"
+	"encoding/json"
 	"fmt"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
+	"path/filepath"
 )
 
 // log config files found
+type Config struct {
+	Lang     string `json:"lang"`
+	Projects []struct {
+		Name   string `json:"name"`
+		Branch string `json:"branch"`
+		Url    string `json:"url"`
+	} `json:"projects"`
+}
 
-func Find() {
+func All() []Config {
+	var result []Config
+	files := files()
+
+	for _, file := range files {
+		p := path.Join(ConfigFolder(), file.Name())
+
+		// symbolic link is broken
+		if _, err := os.Stat(p); err != nil {
+			continue
+		}
+
+		// ignore csv files (legacy)
+		if ext := filepath.Ext(p); ext == ".csv" {
+			continue
+		}
+
+		parsed := parse(p)
+		result = append(result, parsed)
+	}
+
+	return result
+}
+
+// array of configuratiion file name
+func files() []fs.FileInfo {
 	files, err := ioutil.ReadDir(ConfigFolder())
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, file := range files {
-		p := path.Join(ConfigFolder(), file.Name())
-
-		if _, err := os.Stat(p); err != nil {
-			// fmt.Println(err.Error())
-			continue
-		}
-
-		parse(p)
-	}
+	return files
 }
 
-func parse(filepath string) {
-	file, err := os.Open(filepath)
+func parse(filepath string) Config {
+	file, err := ioutil.ReadFile(filepath)
+	var proj Config
 
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	defer file.Close()
+	err = json.Unmarshal(file, &proj)
 
-	reader := csv.NewReader(file)
-	records, _ := reader.ReadAll()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	fmt.Println(records)
+	return proj
 }
 
 func home() string {

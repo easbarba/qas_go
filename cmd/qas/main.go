@@ -12,10 +12,8 @@ import (
 func main() {
 	grabValue, archiveValue := parse()
 
-	config.Find()
-
 	if *grabValue == true {
-		actions.Grab(config.Folder())
+		actions.Grab(config.Folder(), config.All())
 	}
 
 	if *archiveValue != "" {
