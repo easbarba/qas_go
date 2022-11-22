@@ -1,4 +1,4 @@
-module github.com/easbarba/qas.go
+module github.com/easbarba/qas
 
 go 1.19
 

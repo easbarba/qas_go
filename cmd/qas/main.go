@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/easbarba/qas.go/internal/actions"
+	"github.com/easbarba/qas/internal/actions"
 )
 
 func main() {
