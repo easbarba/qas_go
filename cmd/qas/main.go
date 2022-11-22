@@ -5,19 +5,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/easbarba/qas.go/internal/archive"
-	"github.com/easbarba/qas.go/internal/grab"
+	"github.com/easbarba/qas.go/internal/actions"
 )
 
 func main() {
 	grabValue, archiveValue := parse()
 
 	if *grabValue == true {
-		grab.Grab()
+		actions.Grab()
 	}
 
 	if *archiveValue != "" {
-		archive.Archive(archiveValue)
+		actions.Archive(archiveValue)
 	}
 }
 
