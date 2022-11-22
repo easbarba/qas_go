@@ -6,13 +6,16 @@ import (
 	"os"
 
 	"github.com/easbarba/qas/internal/actions"
+	"github.com/easbarba/qas/internal/config"
 )
 
 func main() {
 	grabValue, archiveValue := parse()
 
+	config.Find()
+
 	if *grabValue == true {
-		actions.Grab()
+		actions.Grab(config.Folder())
 	}
 
 	if *archiveValue != "" {
