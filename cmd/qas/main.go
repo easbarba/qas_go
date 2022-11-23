@@ -13,7 +13,7 @@ func main() {
 	grabValue, archiveValue := parse()
 
 	if *grabValue == true {
-		actions.Grab(config.Folder(), config.All())
+		actions.Grab(config.All())
 	}
 
 	if *archiveValue != "" {

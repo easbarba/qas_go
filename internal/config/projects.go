@@ -11,8 +11,9 @@ import (
 	"path/filepath"
 )
 
+// Raw structure of Configuration files
 // log config files found
-type Config struct {
+type Raw struct {
 	Lang     string `json:"lang"`
 	Projects []struct {
 		Name   string `json:"name"`
@@ -21,15 +22,26 @@ type Config struct {
 	} `json:"projects"`
 }
 
-func All() []Config {
-	var result []Config
+// All configuration files unmarshallowed
+func All() []Raw {
+	var result []Raw
 	files := files()
+
+	fmt.Println("Configuration files found: ")
 
 	for _, file := range files {
 		p := path.Join(Folder(), file.Name())
+		fmt.Println(p)
 
-		// symbolic link is broken
-		if _, err := os.Stat(p); err != nil {
+		fileInfo, err := os.Stat(p)
+
+		// ignore broken symbolic link
+		if os.IsNotExist(err) {
+			continue
+		}
+
+		// ignore directories
+		if fileInfo.IsDir() {
 			continue
 		}
 
@@ -56,9 +68,9 @@ func files() []fs.FileInfo {
 	return files
 }
 
-func parse(filepath string) Config {
+func parse(filepath string) Raw {
 	file, err := ioutil.ReadFile(filepath)
-	var proj Config
+	var proj Raw
 
 	if err != nil {
 		fmt.Println(err)
@@ -79,14 +91,14 @@ func home() string {
 	return home
 }
 
-// folder that all projects repositories will be stored at
+// HomeFolder that all projects repositories will be stored at
 func HomeFolder() string {
 	result := path.Join(home(), "Projects")
 
 	return result
 }
 
-// configuration folder that config files will be looked up for
+// Folder that config files will be looked up for
 func Folder() string {
 	result := path.Join(home(), ".config", "qas")
 

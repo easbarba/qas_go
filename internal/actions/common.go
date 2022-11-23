@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// CheckIfError return or print error
 func CheckIfError(err error) {
 	if err == nil {
 		return

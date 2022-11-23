@@ -11,15 +11,13 @@ import (
 	"github.com/easbarba/qas/internal/config"
 )
 
-// TODO: After grabbing log informations
+// TODO: After grabbing informations log
 
-// TODO return error
-func Grab(dest string, projects []config.Config) {
-	fmt.Printf("Grabbing at:  %s \n", dest)
-
+// Grab all project by pulling or cloning
+func Grab(projects []config.Raw) {
 	for _, project := range projects {
 		for _, p := range project.Projects {
-			fld := path.Join(dest, project.Lang, p.Name)
+			fld := path.Join(config.HomeFolder(), project.Lang, p.Name)
 
 			printInfo(fld, p.Name, p.URL, p.Branch)
 
@@ -31,16 +29,18 @@ func Grab(dest string, projects []config.Config) {
 
 		}
 	}
+
+	// TODO return error
 }
 
 func printInfo(folder, name, url, branch string) {
 	in := `
+name: %s
 url: %s
 branch: %s
-name: %s
 folder: %s
 `
-	fmt.Printf(in, url, branch, name, folder)
+	fmt.Printf(in, name, url, branch, folder)
 }
 
 func clone(folder, name, url, branch string) {

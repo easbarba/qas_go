@@ -2,7 +2,7 @@ deps:
 	go mod download
 
 install:
-	go build -o ~/.local/bin/qas ./cmd/qas/main.go
+	go build -o ${HOME}/.local/bin/qas ./cmd/qas/main.go
 
 lint:
 	golint ./...
