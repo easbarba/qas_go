@@ -1,14 +1,17 @@
 deps:
-	go
+	go mod download
 
 install:
-	go build -o qas
+	go build -o ~/.local/bin/qas ./cmd/qas/main.go
 
 lint:
 	golint ./...
 
 vet:
 	go vet ./...
+
+grab:
+	go run cmd/qas/main.go --grab
 
 imports:
 	goimports -l -w .

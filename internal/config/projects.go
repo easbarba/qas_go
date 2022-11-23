@@ -17,7 +17,7 @@ type Config struct {
 	Projects []struct {
 		Name   string `json:"name"`
 		Branch string `json:"branch"`
-		Url    string `json:"url"`
+		URL    string `json:"url"`
 	} `json:"projects"`
 }
 
@@ -26,7 +26,7 @@ func All() []Config {
 	files := files()
 
 	for _, file := range files {
-		p := path.Join(ConfigFolder(), file.Name())
+		p := path.Join(Folder(), file.Name())
 
 		// symbolic link is broken
 		if _, err := os.Stat(p); err != nil {
@@ -47,7 +47,7 @@ func All() []Config {
 
 // array of configuratiion file name
 func files() []fs.FileInfo {
-	files, err := ioutil.ReadDir(ConfigFolder())
+	files, err := ioutil.ReadDir(Folder())
 
 	if err != nil {
 		log.Fatal(err)
@@ -79,13 +79,15 @@ func home() string {
 	return home
 }
 
-func Folder() string {
+// folder that all projects repositories will be stored at
+func HomeFolder() string {
 	result := path.Join(home(), "Projects")
 
 	return result
 }
 
-func ConfigFolder() string {
+// configuration folder that config files will be looked up for
+func Folder() string {
 	result := path.Join(home(), ".config", "qas")
 
 	return result

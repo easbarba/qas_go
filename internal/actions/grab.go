@@ -6,6 +6,7 @@ import (
 	"path"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
 
 	"github.com/easbarba/qas/internal/config"
 )
@@ -20,12 +21,12 @@ func Grab(dest string, projects []config.Config) {
 		for _, p := range project.Projects {
 			fld := path.Join(dest, project.Lang, p.Name)
 
-			printInfo(fld, p.Name, p.Url, p.Branch)
+			printInfo(fld, p.Name, p.URL, p.Branch)
 
 			if _, err := os.Stat(path.Join(fld, ".git")); err == nil {
-				pull(fld, p.Url)
+				pull(fld, p.URL)
 			} else {
-				clone(fld, p.Name, p.Url, p.Branch)
+				clone(fld, p.Name, p.URL, p.Branch)
 			}
 
 		}
@@ -45,10 +46,14 @@ folder: %s
 func clone(folder, name, url, branch string) {
 	fmt.Println("status: cloning")
 	fmt.Println("")
+	branch = fmt.Sprintf("refs/heads/%s", branch)
 
 	_, err := git.PlainClone(folder, false, &git.CloneOptions{
-		URL:      url,
-		Progress: os.Stdout,
+		URL:           url,
+		ReferenceName: plumbing.ReferenceName(branch),
+		Progress:      os.Stdout,
+		SingleBranch:  true,
+		Depth:         1,
 	})
 
 	CheckIfError(err)
@@ -66,13 +71,4 @@ func pull(folder, url string) {
 
 	w.Pull(&git.PullOptions{RemoteName: "origin"})
 	CheckIfError(err)
-}
-
-func CheckIfError(err error) {
-	if err == nil {
-		return
-	}
-
-	fmt.Printf("\x1b[31;1m%s\x1b[0m\n", fmt.Sprintf("error: %s", err))
-	os.Exit(1)
 }
