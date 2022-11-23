@@ -19,12 +19,28 @@ Archive selected projects at `$HOME/Downloads/archived`:
 `qas` looks for configuration files at `$XDG_CONFIG/qas`:
 
 
-$XDG_CONFIG/qas/misc.csv
-```csv
-name,branch,url
-awesomewm,master,https://github.com/awesomeWM/awesome
-nuxt,main,https://github.com/nuxt/framework
-swift_format,main,https://github.com/apple/swift-format
+$XDG_CONFIG/qas/misc.json
+```json
+{
+   "lang": "misc",
+   "projects": [
+      {
+         "name": "awesomewm",
+         "branch": "master",
+         "url": "https://github.com/awesomeWM/awesome"
+      },
+      {
+         "name": "nuxt",
+         "branch": "main",
+         "url": "https://github.com/nuxt/framework"
+      },
+      {
+         "name": "swift_format",
+         "branch": "main",
+         "url": "https://github.com/apple/swift-format"
+      }
+   ]
+}
 ```
 
 ## Installation
