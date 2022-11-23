@@ -31,8 +31,6 @@ func All() []Raw {
 
 	for _, file := range files {
 		p := path.Join(Folder(), file.Name())
-		fmt.Println(p)
-
 		fileInfo, err := os.Stat(p)
 
 		// ignore broken symbolic link
@@ -50,6 +48,7 @@ func All() []Raw {
 			continue
 		}
 
+		fmt.Println(p)
 		parsed := parse(p)
 		result = append(result, parsed)
 	}
@@ -85,7 +84,8 @@ func parse(filepath string) Raw {
 	return proj
 }
 
-func home() string {
+// Home folder of user
+func Home() string {
 	home, _ := os.UserHomeDir()
 
 	return home
@@ -93,14 +93,14 @@ func home() string {
 
 // HomeFolder that all projects repositories will be stored at
 func HomeFolder() string {
-	result := path.Join(home(), "Projects")
+	result := path.Join(Home(), "Projects")
 
 	return result
 }
 
 // Folder that config files will be looked up for
 func Folder() string {
-	result := path.Join(home(), ".config", "qas")
+	result := path.Join(Home(), ".config", "qas")
 
 	return result
 }

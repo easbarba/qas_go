@@ -14,7 +14,9 @@ import (
 // TODO: After grabbing informations log
 
 // Grab all project by pulling or cloning
-func Grab(projects []config.Raw) {
+func Grab() {
+	projects := config.All()
+
 	for _, project := range projects {
 		for _, p := range project.Projects {
 			fld := path.Join(config.HomeFolder(), project.Lang, p.Name)
@@ -22,7 +24,7 @@ func Grab(projects []config.Raw) {
 			printInfo(fld, p.Name, p.URL, p.Branch)
 
 			if _, err := os.Stat(path.Join(fld, ".git")); err == nil {
-				pull(fld, p.URL)
+				pull(fld, p.URL, p.Branch)
 			} else {
 				clone(fld, p.Name, p.URL, p.Branch)
 			}
@@ -59,7 +61,7 @@ func clone(folder, name, url, branch string) {
 	CheckIfError(err)
 }
 
-func pull(folder, url string) {
+func pull(folder, url, branch string) {
 	fmt.Println("status: pulling")
 	fmt.Println("")
 
@@ -69,6 +71,12 @@ func pull(folder, url string) {
 	w, err := o.Worktree()
 	CheckIfError(err)
 
-	w.Pull(&git.PullOptions{RemoteName: "origin"})
+	w.Pull(&git.PullOptions{
+		RemoteName:    "origin",
+		ReferenceName: plumbing.ReferenceName(branch),
+		SingleBranch:  true,
+		Depth:         1,
+		Progress:      os.Stdout,
+	})
 	CheckIfError(err)
 }
