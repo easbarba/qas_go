@@ -8,7 +8,7 @@ Easily manage multiple FLOSS repositories.
 
 Grab all projects locally: 
 
-    `$ qas --grab`
+    $ qas --grab
 
 Archive selected projects at `$HOME/Downloads/archived`: 
 
@@ -45,7 +45,7 @@ $XDG_CONFIG/qas/misc.json
 
 ## Installation
 
-`Qas` supports both `npm` and `bun`, and then to get the needed dependencies go with:
+Get the needed dependencies and install with:
 
     $ make deps & make install
 
