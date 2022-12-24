@@ -45,6 +45,7 @@ folder: %s
 	fmt.Printf(in, name, url, branch, folder)
 }
 
+// clone repository if none is found at folder
 func clone(folder, name, url, branch string) {
 	fmt.Println("status: cloning")
 	fmt.Println("")
@@ -61,6 +62,7 @@ func clone(folder, name, url, branch string) {
 	CheckIfError(err)
 }
 
+// pull repository at url/ and branch in the found folder
 func pull(folder, url, branch string) {
 	fmt.Println("status: pulling")
 	fmt.Println("")

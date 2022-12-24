@@ -72,13 +72,13 @@ func parse(filepath string) Raw {
 	var proj Raw
 
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 
 	err = json.Unmarshal(file, &proj)
 
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 
 	return proj
@@ -86,7 +86,11 @@ func parse(filepath string) Raw {
 
 // Home folder of user
 func Home() string {
-	home, _ := os.UserHomeDir()
+	home, err := os.UserHomeDir()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return home
 }
