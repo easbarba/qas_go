@@ -11,7 +11,7 @@ deps:
 build: test
 	GOARCH=$(ARCH) GOOS=$(OS) go build -race -ldflags "-extldflags '-static'" -o ${NAME} ./cmd/qas/main.go
 
-local:
+install: build
 	mv -v ./${NAME} ${TO}/${NAME}
 
 lint:
