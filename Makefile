@@ -1,8 +1,11 @@
+NAME := qas
+TO := ${HOME}/.local/bin
+
 deps:
 	go mod download
 
 install:
-	go build -o ${HOME}/.local/bin/qas ./cmd/qas/main.go
+	go build -o ${TO}/${NAME} ./cmd/qas/main.go
 
 lint:
 	golint ./...
@@ -15,6 +18,9 @@ vet:
 
 grab:
 	go run cmd/qas/main.go --grab
+
+archive:
+	go run cmd/qas/main.go --archive meh,forevis,tar
 
 imports:
 	goimports -l -w .
