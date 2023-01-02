@@ -54,6 +54,8 @@ Get the needed dependencies and install with:
 ## TODO
 
 - more management utilities
+- add/overwrite configuration via cli: `$ qas --add 'go,gum,main,https://github.com/charmbracelet/gum'`
+- list current configuration being used, table output.
 
 ## History
 
