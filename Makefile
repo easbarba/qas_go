@@ -1,14 +1,21 @@
+.DEFAULT_GOAL := build
+
+OS :=linux
+ARCH := amd64
 NAME := qas
 TO := ${HOME}/.local/bin
 
 deps:
 	go mod download
 
-install:
-	go build -o ${TO}/${NAME} ./cmd/qas/main.go
+build: test
+	GOARCH=$(ARCH) GOOS=$(OS) go build -race -ldflags "-extldflags '-static'" -o ${NAME} ./cmd/qas/main.go
+
+local:
+	mv -v ./${NAME} ${TO}/${NAME}
 
 lint:
-	golint ./...
+	golangci-lint run --enable-all internal cmd/pak
 
 test:
 	go test -v ./...
@@ -25,4 +32,7 @@ archive:
 imports:
 	goimports -l -w .
 
-.PHONY: imports grab vet test lint install deps
+coverage:
+	go test --cover ./... -coverprofile=coverage.out
+
+.PHONY: imports grab vet test lint install deps coverage

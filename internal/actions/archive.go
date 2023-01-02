@@ -26,7 +26,6 @@ func Archive(rawlist *string) {
 					fmt.Println(m)
 				}
 			}
-
 		}
 	}
 }
