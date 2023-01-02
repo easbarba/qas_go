@@ -7,6 +7,9 @@ install:
 lint:
 	golint ./...
 
+test:
+	go test -v ./...
+
 vet:
 	go vet ./...
 
@@ -15,3 +18,5 @@ grab:
 
 imports:
 	goimports -l -w .
+
+.PHONY: imports grab vet test lint install deps
