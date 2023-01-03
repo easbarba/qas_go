@@ -25,7 +25,7 @@ func Grab(verbose *bool) {
 		for _, p := range project.Projects {
 			fld := path.Join(config.HomeFolder, project.Lang, p.Name)
 
-			printInfo(fld, p.Name, p.URL, p.Branch, verbose)
+			printInfo(p.Name, p.URL, p.Branch, verbose)
 
 			if _, err := os.Stat(path.Join(fld, ".git")); err == nil {
 				pull(fld, p.URL, p.Branch)
@@ -37,15 +37,12 @@ func Grab(verbose *bool) {
 	// TODO return error
 }
 
-func printInfo(folder, name, url, branch string, verbose *bool) {
+func printInfo(name, url, branch string, verbose *bool) {
 	if *verbose {
-		template := `
-name: %s
-url: %s
-branch: %s
-folder: %s
-`
-		fmt.Printf(template, name, url, branch, folder)
+		template := `name: %s url: %s branch: %s`
+		fmt.Printf(template, name, url, branch)
+		fmt.Println("")
+		return
 	}
 
 	fmt.Print("name: ", name, "\n")
