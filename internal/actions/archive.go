@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"path"
 	"strings"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/easbarba/qas/internal/config"
 )
 
 var archiveFolder string = path.Join(config.Home(), "Downloads", "archived")
+var spin = spinner.New(spinner.CharSets[26], 100*time.Millisecond)
 
 // Archive will zip repositories and place $DOWNLOADS/archived
 func Archive(rawlist *string, verbose *bool) {
@@ -31,5 +34,7 @@ func Archive(rawlist *string, verbose *bool) {
 }
 
 func do(project string) {
-	fmt.Println("Archiving:", project)
+	spin.Start()
+	fmt.Println(project)
+	spin.Stop()
 }
