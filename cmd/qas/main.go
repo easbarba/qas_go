@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	grab, archive, verbose := cliParse()
+	grab, archive, new, verbose := cliParse()
 
 	if *grab == true {
 		actions.Grab(verbose)
@@ -18,13 +18,18 @@ func main() {
 	if *archive != "" {
 		actions.Archive(archive, verbose)
 	}
+
+	if *new != "" {
+		actions.New(new, verbose)
+	}
 }
 
 // command line arguments parser
-func cliParse() (*bool, *string, *bool) {
+func cliParse() (*bool, *string, *string, *bool) {
 	verbose := flag.Bool("verbose", false, "display more information")
 	grab := flag.Bool("grab", false, "grab floss projects")
 	archive := flag.String("archive", "", "archive floss projects listed on NAMES")
+	new := flag.String("new", "", "add a new configuration, eg: js,gum,main,https://github.com/charmbracelet/gum")
 
 	flag.Parse()
 
@@ -34,10 +39,10 @@ func cliParse() (*bool, *string, *bool) {
 		flag.PrintDefaults()
 	}
 
-	if *grab == false && *archive == "" {
+	if *grab == false && *archive == "" && *new == "" {
 		flag.Usage()
 		os.Exit(0)
 	}
 
-	return grab, archive, verbose
+	return grab, archive, new, verbose
 }
