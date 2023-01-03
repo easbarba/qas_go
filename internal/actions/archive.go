@@ -15,16 +15,21 @@ func Archive(rawlist *string, verbose *bool) {
 	projects := config.All(verbose)
 	list := strings.Split(*rawlist, ",")
 
-	fmt.Printf("\nArchiving at %s\n", archiveFolder)
+	if *verbose {
+		fmt.Printf("\nArchiving at %s\n", archiveFolder)
+	}
 
 	for _, project := range projects {
 		for _, p := range project.Projects {
 			for _, m := range list {
 				if p.Name == path.Base(m) {
-					fmt.Println()
-					fmt.Println(m)
+					do(m)
 				}
 			}
 		}
 	}
+}
+
+func do(project string) {
+	fmt.Println("Archiving:", project)
 }
