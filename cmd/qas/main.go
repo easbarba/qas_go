@@ -9,27 +9,28 @@ import (
 )
 
 func main() {
-	grabValue, archiveValue := parse()
+	grab, archive, verbose := cliParse()
 
-	if *grabValue == true {
-		actions.Grab()
+	if *grab == true {
+		actions.Grab(verbose)
 	}
 
-	if *archiveValue != "" {
-		actions.Archive(archiveValue)
+	if *archive != "" {
+		actions.Archive(archive, verbose)
 	}
 }
 
 // command line arguments parser
-func parse() (*bool, *string) {
+func cliParse() (*bool, *string, *bool) {
+	verbose := flag.Bool("verbose", false, "display more information")
 	grab := flag.Bool("grab", false, "grab floss projects")
 	archive := flag.String("archive", "", "archive floss projects listed on NAMES")
 
 	flag.Parse()
 
 	flag.Usage = func() {
-		fmt.Fprintf(flag.CommandLine.Output(), "qas - Easily manage multiple FLOSS repositories. \n\n")
-		fmt.Fprintln(flag.CommandLine.Output(), "Usage information:")
+		fmt.Fprintf(flag.CommandLine.Output(), "qas - Easily manage multiple FLOSS repositories. \n")
+		fmt.Fprintln(flag.CommandLine.Output(), "\nUsage information:")
 		flag.PrintDefaults()
 	}
 
@@ -38,5 +39,5 @@ func parse() (*bool, *string) {
 		os.Exit(0)
 	}
 
-	return grab, archive
+	return grab, archive, verbose
 }

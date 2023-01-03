@@ -8,15 +8,14 @@ import (
 	"github.com/easbarba/qas/internal/config"
 )
 
-// Archive will zip repositories and place $DOWNLOADS/archived
-func Archive(rawlist *string) {
-	down := path.Join(config.Home(), "Downloads", "archived")
-	list := strings.Split(*rawlist, ",")
-	projects := config.All()
+var archiveFolder string = path.Join(config.Home(), "Downloads", "archived")
 
-	fmt.Println()
-	fmt.Printf("Archiving at %s", down)
-	fmt.Println()
+// Archive will zip repositories and place $DOWNLOADS/archived
+func Archive(rawlist *string, verbose *bool) {
+	projects := config.All(verbose)
+	list := strings.Split(*rawlist, ",")
+
+	fmt.Printf("\nArchiving at %s\n", archiveFolder)
 
 	for _, project := range projects {
 		for _, p := range project.Projects {

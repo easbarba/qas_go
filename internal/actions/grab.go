@@ -14,8 +14,8 @@ import (
 // TODO: After grabbing informations log
 
 // Grab all project by pulling or cloning
-func Grab() {
-	projects := config.All()
+func Grab(verbose *bool) {
+	projects := config.All(verbose)
 
 	for _, project := range projects {
 		for _, p := range project.Projects {
@@ -58,20 +58,27 @@ func clone(folder, name, url, branch string) {
 		SingleBranch:  true,
 		Depth:         1,
 	})
-
-	CheckIfError(err)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
 
 // pull repository at url/ and branch in the found folder
 func pull(folder, url, branch string) {
 	fmt.Println("status: pulling")
-	fmt.Println("")
 
 	o, err := git.PlainOpen(folder)
-	CheckIfError(err)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	w, err := o.Worktree()
-	CheckIfError(err)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	w.Pull(&git.PullOptions{
 		RemoteName:    "origin",
@@ -80,5 +87,9 @@ func pull(folder, url, branch string) {
 		Depth:         1,
 		Progress:      os.Stdout,
 	})
-	CheckIfError(err)
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

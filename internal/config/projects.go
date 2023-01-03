@@ -11,9 +11,9 @@ import (
 	"path/filepath"
 )
 
-// Raw structure of Configuration files
+// Config structure of Configuration files
 // log config files found
-type Raw struct {
+type Config struct {
 	Lang     string `json:"lang"`
 	Projects []struct {
 		Name   string `json:"name"`
@@ -23,14 +23,16 @@ type Raw struct {
 }
 
 // All configuration files unmarshallowed
-func All() []Raw {
-	var result []Raw
+func All(verbose *bool) []Config {
+	var result []Config
 	files := files()
 
-	fmt.Println("Configuration files found: ")
+	if *verbose {
+		fmt.Println("Configuration files found: ")
+	}
 
 	for _, file := range files {
-		p := path.Join(Folder(), file.Name())
+		p := path.Join(folder(), file.Name())
 		fileInfo, err := os.Stat(p)
 
 		// ignore broken symbolic link
@@ -48,7 +50,10 @@ func All() []Raw {
 			continue
 		}
 
-		fmt.Println(p)
+		if *verbose {
+			fmt.Println(p)
+		}
+
 		parsed := parse(p)
 		result = append(result, parsed)
 	}
@@ -56,10 +61,9 @@ func All() []Raw {
 	return result
 }
 
-// array of configuratiion file name
+// all configuration files found
 func files() []fs.FileInfo {
-	files, err := ioutil.ReadDir(Folder())
-
+	files, err := ioutil.ReadDir(folder())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -67,27 +71,25 @@ func files() []fs.FileInfo {
 	return files
 }
 
-func parse(filepath string) Raw {
+func parse(filepath string) Config {
+	var config Config
+
 	file, err := ioutil.ReadFile(filepath)
-	var proj Raw
-
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = json.Unmarshal(file, &proj)
-
+	err = json.Unmarshal(file, &config)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return proj
+	return config
 }
 
 // Home folder of user
 func Home() string {
 	home, err := os.UserHomeDir()
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -97,14 +99,10 @@ func Home() string {
 
 // HomeFolder that all projects repositories will be stored at
 func HomeFolder() string {
-	result := path.Join(Home(), "Projects")
-
-	return result
+	return path.Join(Home(), "Projects")
 }
 
-// Folder that config files will be looked up for
-func Folder() string {
-	result := path.Join(Home(), ".config", "qas")
-
-	return result
+// folder that config files will be looked up for
+func folder() string {
+	return path.Join(Home(), ".config", "qas")
 }
