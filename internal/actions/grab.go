@@ -23,7 +23,7 @@ func Grab(verbose *bool) {
 
 	for _, project := range projects {
 		for _, p := range project.Projects {
-			fld := path.Join(config.HomeFolder(), project.Lang, p.Name)
+			fld := path.Join(config.HomeFolder, project.Lang, p.Name)
 
 			printInfo(fld, p.Name, p.URL, p.Branch, verbose)
 
@@ -48,7 +48,7 @@ folder: %s
 		fmt.Printf(template, name, url, branch, folder)
 	}
 
-	fmt.Println("\nname: ", name)
+	fmt.Print("name: ", name, "\n")
 }
 
 // clone repository if none is found at folder

@@ -14,17 +14,17 @@ var archiveFolder string = path.Join(config.Home(), "Downloads", "archived")
 var spin = spinner.New(spinner.CharSets[26], 100*time.Millisecond)
 
 // Archive will zip repositories and place $DOWNLOADS/archived
-func Archive(rawlist *string, verbose *bool) {
-	projects := config.All(verbose)
-	list := strings.Split(*rawlist, ",")
+func Archive(list *string, verbose *bool) {
+	configs := config.All(verbose)
+	projectsList := strings.Split(*list, ",")
 
 	if *verbose {
 		fmt.Printf("\nArchiving at %s\n", archiveFolder)
 	}
 
-	for _, project := range projects {
-		for _, p := range project.Projects {
-			for _, m := range list {
+	for _, config := range configs {
+		for _, p := range config.Projects {
+			for _, m := range projectsList {
 				if p.Name == path.Base(m) {
 					do(m)
 				}
@@ -33,6 +33,9 @@ func Archive(rawlist *string, verbose *bool) {
 	}
 }
 
+// TODO: mkdir archive folder
+// TODO: archive to zip by default
+// TODO: store at archive folder
 func do(project string) {
 	spin.Start()
 	fmt.Println(project)

@@ -22,17 +22,28 @@ type Config struct {
 	} `json:"projects"`
 }
 
+// HomeFolder that all projects repositories will be stored at
+var HomeFolder string = path.Join(Home(), "Projects")
+
+// folder that config files will be looked up for
+var folder string = path.Join(Home(), ".config", "qas")
+
 // All configuration files unmarshallowed
 func All(verbose *bool) []Config {
 	var result []Config
-	files := files()
+
+	files, err := files()
+	if err != nil {
+		fmt.Println("no configuration file found!")
+		os.Exit(1)
+	}
 
 	if *verbose {
-		fmt.Println("Configuration files found: ")
+		// printConfig(files)
 	}
 
 	for _, file := range files {
-		p := path.Join(folder(), file.Name())
+		p := path.Join(folder, file.Name())
 		fileInfo, err := os.Stat(p)
 
 		// ignore broken symbolic link
@@ -50,10 +61,6 @@ func All(verbose *bool) []Config {
 			continue
 		}
 
-		if *verbose {
-			fmt.Println(p)
-		}
-
 		parsed := parse(p)
 		result = append(result, parsed)
 	}
@@ -61,16 +68,23 @@ func All(verbose *bool) []Config {
 	return result
 }
 
-// all configuration files found
-func files() []fs.FileInfo {
-	files, err := ioutil.ReadDir(folder())
+// Print Configuration minimal
+func printConfig(p string) {
+	fmt.Println("Configuration files found: ")
+	fmt.Print(p)
+}
+
+// all configuration files found TODO: return error if no configuration is found.
+func files() ([]fs.FileInfo, error) {
+	files, err := ioutil.ReadDir(folder)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return files
+	return files, nil
 }
 
+// Parse configuration file, check if the expect syntax is correct TODO: or err.
 func parse(filepath string) Config {
 	var config Config
 
@@ -95,14 +109,4 @@ func Home() string {
 	}
 
 	return home
-}
-
-// HomeFolder that all projects repositories will be stored at
-func HomeFolder() string {
-	return path.Join(Home(), "Projects")
-}
-
-// folder that config files will be looked up for
-func folder() string {
-	return path.Join(Home(), ".config", "qas")
 }
