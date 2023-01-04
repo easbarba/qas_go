@@ -22,15 +22,15 @@ func Grab(verbose *bool) {
 	projects := config.All(verbose)
 
 	for _, project := range projects {
-		for _, p := range project.Projects {
-			fld := path.Join(config.HomeFolder, project.Lang, p.Name)
+		for _, pj := range project.Projects {
+			folder := path.Join(config.HomeFolder, project.Lang, pj.Name)
 
-			printInfo(p.Name, p.URL, p.Branch, verbose)
+			printInfo(pj.Name, pj.URL, pj.Branch, verbose)
 
-			if _, err := os.Stat(path.Join(fld, ".git")); err == nil {
-				pull(fld, p.URL, p.Branch)
+			if _, err := os.Stat(path.Join(folder, ".git")); err == nil {
+				pull(folder, pj.URL, pj.Branch)
 			} else {
-				clone(fld, p.Name, p.URL, p.Branch)
+				clone(folder, pj.Name, pj.URL, pj.Branch)
 			}
 		}
 	}
@@ -39,8 +39,7 @@ func Grab(verbose *bool) {
 
 func printInfo(name, url, branch string, verbose *bool) {
 	if *verbose {
-		template := `name: %s url: %s branch: %s`
-		fmt.Printf(template, name, url, branch)
+		fmt.Printf(`name: %s url: %s branch: %s`, name, url, branch)
 		fmt.Println("")
 		return
 	}
