@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
+	"github.com/fatih/color"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 
@@ -38,13 +39,13 @@ func Grab(verbose *bool) {
 }
 
 func printInfo(name, url, branch string, verbose *bool) {
+	title := color.New(color.FgHiYellow, color.Bold).SprintFunc()
 	if *verbose {
-		fmt.Printf(`name: %s url: %s branch: %s`, name, url, branch)
-		fmt.Println("")
+		fmt.Print(title("name: "), name, title(" url: "), url, title(" branch: "), branch, "\n")
 		return
 	}
 
-	fmt.Print("name: ", name, "\n")
+	fmt.Print(title("name: "), name, "\n")
 }
 
 // clone repository if none is found at folder
