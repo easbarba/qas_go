@@ -4,6 +4,10 @@ Easily manage multiple FLOSS repositories.
 
 [hub.docker](https://hub.docker.com/r/easbarbosa/qas)
 
+## API Backend
+
+https://github.com/easbarba/qas_api
+
 ## Usage
 
 Grab all projects locally: 
