@@ -2,8 +2,6 @@
 
 Easily manage multiple FLOSS repositories.
 
-[hub.docker](https://hub.docker.com/r/easbarbosa/qas)
-
 ## API
 
 `qas_api` provides all projects to its front-end cli app, so it needs to be either on `$PATH` or `$PWD`.
@@ -51,8 +49,6 @@ $XDG_CONFIG/qas/misc.json
 Get the needed dependencies and install with:
 
     $ make deps & make install
-
-## Container
 
 ## GNU Guix
 
