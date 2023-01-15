@@ -1,0 +1,17 @@
+[
+    {
+        "name": "juancrg90/clean-code-notes",
+        "branch": "master",
+        "url": "https://github.com/JuanCrg90/Clean-Code-Notes"
+    },
+    {
+        "name": "github-gitignore",
+        "branch": "main",
+        "url": "https://github.com/github/gitignore"
+    },
+    {
+        "name": "makefiletutorial",
+        "branch": "gh-pages",
+        "url": "https://github.com/theicfire/makefiletutorial"
+    }
+]

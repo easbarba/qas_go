@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/briandowns/spinner"
@@ -24,9 +25,10 @@ func Grab(verbose *bool) {
 
 	for _, project := range projects {
 		for _, pj := range project.Projects {
-			folder := path.Join(config.HomeFolder, project.Lang, pj.Name)
+			name := strings.ToLower(pj.Name)
+			folder := path.Join(config.HomeFolder, project.Lang, name)
 
-			printInfo(pj.Name, pj.URL, pj.Branch, verbose)
+			printInfo(name, pj.URL, pj.Branch, verbose)
 
 			if _, err := os.Stat(path.Join(folder, ".git")); err == nil {
 				pull(folder, pj.URL, pj.Branch)

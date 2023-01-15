@@ -1,6 +1,5 @@
 FROM golang:1.19-alpine AS build
 MAINTAINER EAS Barbosa <easbarba@outlook.com>
-
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
