@@ -6,7 +6,7 @@ Easily manage multiple FLOSS repositories.
 
 ## API
 
-`Qas` consumes all projects to manage from an rest API.
+`qas_api` provides all projects to its front-end cli app, so it needs to be either on `$PATH` or `$PWD`.
 
 https://github.com/easbarba/qas_api
 
@@ -64,12 +64,11 @@ To load all system dependencies, just run `guix shell`
 
 - add/overwrite configuration via cli: `$ qas --add 'go,gum,main,https://github.com/charmbracelet/gum'`
 - log history of commands
-- display progress of action inline
 
 ### Low
 
 - more management utilities
-- list current configuration being used, table output.
+- list current configuration.
 
 ## History
 

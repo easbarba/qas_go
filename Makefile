@@ -2,23 +2,30 @@
 
 OS :=linux
 ARCH := amd64
-NAME := qas
+
+BINARY_NAME := qas
 TO := ${HOME}/.local/bin
+
+all: build test
 
 deps:
 	go mod download
 
 build: test
-	GOARCH=$(ARCH) GOOS=$(OS) go build -race -ldflags "-extldflags '-static'" -o ${NAME} ./cmd/qas/main.go
+	GOARCH=$(ARCH) GOOS=$(OS) go build -race -ldflags "-extldflags '-static'" -o ${BINARY_NAME} ./cmd/qas/main.go
 
 install: build
-	mv -v ./${NAME} ${TO}/${NAME}
+	mv -v ./${BINARY_NAME} ${TO}/${BINARY_NAME}
 
 lint:
 	golangci-lint run --enable-all internal cmd/pak
 
 test:
 	go test -v ./...
+
+clean:
+	go clean
+	rm ${BINARY_NAME}
 
 vet:
 	go vet ./...
@@ -34,5 +41,8 @@ imports:
 
 coverage:
 	go test --cover ./... -coverprofile=coverage.out
+
+image:
+	podman build --file ./Dockerfile --tag $USER/${BINARY_NAME}:
 
 .PHONY: imports grab vet test lint install deps coverage
