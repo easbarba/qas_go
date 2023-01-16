@@ -4,6 +4,7 @@ OS :=linux
 ARCH := amd64
 
 BINARY_NAME := qas
+MAIN := ./main.go
 TO := ${HOME}/.local/bin
 
 all: build test
@@ -12,7 +13,7 @@ deps:
 	go mod download
 
 build: test
-	GOARCH=$(ARCH) GOOS=$(OS) go build -race -ldflags "-extldflags '-static'" -o ${BINARY_NAME} ./cmd/qas/main.go
+	GOARCH=$(ARCH) GOOS=$(OS) go build -race -ldflags "-extldflags '-static'" -o ${BINARY_NAME} ${MAIN}
 
 install: build
 	mv -v ./${BINARY_NAME} ${TO}/${BINARY_NAME}

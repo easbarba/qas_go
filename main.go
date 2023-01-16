@@ -4,8 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"os/exec"
-	"sync"
 
 	"github.com/easbarba/qas/internal/actions"
 )
@@ -13,33 +11,34 @@ import (
 func main() {
 	archive, grab, verbose := cliParser()
 
-	var wg sync.WaitGroup
+	// var wg sync.WaitGroup
 
-	wg.Add(1)
+	// wg.Add(1)
 
-	go func() {
-		defer wg.Done()
+	// go func() {
+	// 	defer wg.Done()
 
-		cmd := exec.Command("qas_api")
-		err := cmd.Start()
-		if err != nil {
-			return
-		}
+	// 	cmd := exec.Command("qas_api")
+	// 	err := cmd.Start()
+	// 	if err != nil {
+	// 		os.Exit(1)
+	// 	}
 
-		err = cmd.Wait()
-		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-		}
+	// 	err = cmd.Wait()
+	// 	if err != nil {
+	// 		fmt.Printf("Error: %v\n", err)
+	// 		os.Exit(1)
+	// 	}
+	// 	fmt.Print("running")
+	if *grab {
+		actions.Grab(verbose)
+		return
+	}
 
-		if *grab {
-			actions.Grab(verbose)
-			return
-		}
+	actions.Archive(archive, verbose)
+	// }()
 
-		actions.Archive(archive, verbose)
-	}()
-
-	wg.Wait()
+	// wg.Wait()
 }
 
 func cliParser() (*string, *bool, *bool) {

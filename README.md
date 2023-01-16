@@ -4,7 +4,7 @@ Easily manage multiple FLOSS repositories.
 
 ## API
 
-`qas_api` provides all projects to its front-end cli app, so it needs to be either on `$PATH` or `$PWD`.
+`qas_api` provides all projects to `qas`, so it needs to be running.
 
 https://github.com/easbarba/qas_api
 

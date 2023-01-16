@@ -1,3 +1,7 @@
+## [0.2.2] - 16/01/2023
+
+- revert auto start of `qas_api`
+
 ## [0.2.1] - 15/01/2023
 
 - start and hang on `qas_api`
