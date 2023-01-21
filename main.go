@@ -11,34 +11,12 @@ import (
 func main() {
 	archive, grab, verbose := cliParser()
 
-	// var wg sync.WaitGroup
-
-	// wg.Add(1)
-
-	// go func() {
-	// 	defer wg.Done()
-
-	// 	cmd := exec.Command("qas_api")
-	// 	err := cmd.Start()
-	// 	if err != nil {
-	// 		os.Exit(1)
-	// 	}
-
-	// 	err = cmd.Wait()
-	// 	if err != nil {
-	// 		fmt.Printf("Error: %v\n", err)
-	// 		os.Exit(1)
-	// 	}
-	// 	fmt.Print("running")
 	if *grab {
 		actions.Grab(verbose)
 		return
 	}
 
 	actions.Archive(archive, verbose)
-	// }()
-
-	// wg.Wait()
 }
 
 func cliParser() (*string, *bool, *bool) {

@@ -21,7 +21,7 @@ type Structure []struct {
 }
 
 // TODO: get from url from ENV Variable or cli
-const url = "http://localhost:5000/v1/config/all"
+const url = "http://localhost:5000/v1/config/list"
 
 // HomeFolder that all projects repositories will be stored at
 var HomeFolder string = path.Join(Home(), "Projects")

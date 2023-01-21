@@ -44,6 +44,6 @@ coverage:
 	go test --cover ./... -coverprofile=coverage.out
 
 image:
-	podman build --file ./Dockerfile --tag $USER/${BINARY_NAME}:
+	podman build --file ./Dockerfile --tag $USER/${BINARY_NAME}:$(shell cat .env)
 
 .PHONY: imports grab vet test lint install deps coverage
